@@ -127,7 +127,7 @@ function relojAnalogico(divReloj)
       horas = '0'+horas;
     }
     
-    hora.innerHTML = 'Hora: ' + horas + ' : ' + minutos + ' : ' + segundos;
+    hora.innerHTML = '<div class="hora">Hora: ' + horas + ' : ' + minutos + ' : ' + segundos + '</div>';
   }
   
   function actualizarReloj (horaRef, horaActual)
