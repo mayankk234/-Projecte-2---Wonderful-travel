@@ -6,17 +6,16 @@ body {
 position: absolute;
 left: calc(50% - 1000px);
 top: calc(50% - 450px);
-width: 200px;
-height: 200px;
+width: 150px;
+height: 150px;
 }
 
 h1 {
     color: black;
-    font-size: 700px;
-    text-align: center;
+    font-size: 300px;
 }
 
 .hora {
     color: black;
-    font-size: 25px;
+    font-size: 20px;
 }
