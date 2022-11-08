@@ -18,7 +18,7 @@
                 <div id="relojAnalogico" class="reloj"></div>
             </div>
             <div class="col text-start">
-                <h1>Wonderful-Travel</h1>
+                <h1 class="header">Wonderful  Travel</h1>
             </div>
         </div>
     </div>

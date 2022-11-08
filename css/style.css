@@ -4,18 +4,24 @@ body {
   
 .reloj {
 position: absolute;
-left: calc(50% - 1000px);
+left: calc(50% - 100px);
 top: calc(50% - 450px);
 width: 150px;
 height: 150px;
 }
 
-h1 {
+.header {
     color: black;
-    font-size: 300px;
+    margin-left: -300px;
+    font-size: 100px;
+    margin-top: 30px;
+    letter-spacing: 10px; 
+    word-spacing: 400px;
+
 }
 
 .hora {
     color: black;
     font-size: 20px;
+
 }
