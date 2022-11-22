@@ -31,20 +31,6 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav w-100 justify-content-end ">
-                    <li>
-                        <div class="nav-item active dropdown pr-3">
-                            <a class="nav-link dropdown-toggle active text-light" data-bs-toggle="dropdown" aria-expanded="false">
-                                Log In / Register
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item " href="#">Log In</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item" href="#">Register</a></li>
-                            </ul>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </nav>
@@ -61,7 +47,84 @@
                 <h1>Travel</h1>
             </div>
         </div>
+        
         <hr>
+
+        <form class="form-container">
+            <div class="form-group"> 
+                <label class="control-label" for="date">Date</label>
+                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="date"/>
+            </div>
+
+            <div class="row">
+
+                <div class="col">
+                    <label class="control-label" for="select1">Desti</label>
+                    <select class="form-select" aria-label="Default select example" id="select1">
+                        <option selected>Asia</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+
+                <div class="col">
+                <label class="control-label" for="select2"></label>
+                    <select class="form-select" aria-label="Default select example" id="select2">
+                        <option selected>India</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group"> 
+                        <label class="control-label" for="preu">Preu: </label>
+                        <input class="form-control" id="preu" name="preu" type="number" placeholder="preu €"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="form-group"> 
+                        <label class="control-label" for="nom">Nom: </label>
+                        <input class="form-control" id="nom" name="nom" type="text" placeholder="name"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group"> 
+                        <label class="control-label" for="tel">Telefon: </label>
+                        <input class="form-control" id="tel" name="tel" type="tel" placeholder="000 000 000"/>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+                    <div class="form-group"> 
+                        <label class="control-label" for="persones">Persones </label>
+                        <input class="form-control" id="persones" name="persones" type="number" placeholder="nº persones"/>
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="descompte" name="descompte">
+                <label class="form-check-label" for="decompte">
+                    Descompte 20%
+                </label>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
     </div>
 
 </body>
