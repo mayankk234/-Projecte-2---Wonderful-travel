@@ -8,7 +8,7 @@
     <title>Wonderful-Travel</title>
     <!-- stylesheet -->
     <!-- scripts -->
-    <script src="../js/funcions.js" defer></script>
+    <script type="module" src="../js/Funcions.js" ></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap" rel="stylesheet">  
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
@@ -50,7 +50,7 @@
         
         <hr>
 
-        <form class="form-container">
+        <form class="form-container" action="../logica/index.php" method="post">
             <div class="form-group"> 
                 <label class="control-label" for="date">Date</label>
                 <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="date"/>
@@ -59,18 +59,18 @@
             <div class="row">
 
                 <div class="col">
-                    <label class="control-label" for="select1">Desti</label>
-                    <select class="form-select" aria-label="Default select example" id="select1">
-                        <option selected>Asia</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <label class="control-label" for="continent">Desti</label>
+                    <select class="form-select" aria-label="Default select example" id="continent" name="continent">
+                        <option value="Asia" selected>Asia</option>
+                        <option value="Africa">Africa</option>
+                        <option value="Europa">Europa</option>
+                        <option value="America">America</option>
                     </select>
                 </div>
 
                 <div class="col">
-                <label class="control-label" for="select2"></label>
-                    <select class="form-select" aria-label="Default select example" id="select2">
+                <label class="control-label" for="pais">Pais</label>
+                    <select class="form-select" aria-label="Default select example" id="pais" name="pais">
                         <option selected>India</option>
                         <option value="1">One</option>
                         <option value="2">Two</option>
@@ -96,6 +96,10 @@
                     </div>
                 </div>
             </div>
+                                                <!-- error: -->
+            <?php if (!empty($errorNom)) { ?>
+                <div class="alert alert-danger" role="alert"><?php echo $errorNom; ?></div>
+            <?php } ?>
 
             <div class="row">
                 <div class="col-3">
@@ -123,9 +127,16 @@
                 </label>
             </div>
             <br>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+        </form>        
+        <?php if (!empty($error)) { ?>
+                    <div class="alert alert-danger role="alert"><?php echo $error; ?></div>
+        <?php } ?>
+        <div id="cards viatges">
+
+        </div>
     </div>
+
 
 </body>
 
