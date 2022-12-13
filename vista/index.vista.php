@@ -70,11 +70,7 @@
 
                 <div class="col">
                 <label class="control-label" for="pais">Pais</label>
-                    <select class="form-select" aria-label="Default select example" id="pais" name="pais">
-                        <option selected>India</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select class="form-select" aria-label="Default select example" id="pais" name="pais"></select>
                     </select>
                 </div>
             </div>
@@ -132,9 +128,39 @@
         <?php if (!empty($error)) { ?>
                     <div class="alert alert-danger role="alert"><?php echo $error; ?></div>
         <?php } ?>
-        <div id="cards viatges">
+        <div id="reservas" class="row justify-content-around">
+        
+			 <!--aqui guardem els articles-->
+				<?php 
+				while($res = $statementcards->fetch(PDO::FETCH_ASSOC)):
+                    $desti = "../imatges/";
+                    $desti .= $res['desti'];
+                    $desti .= ".jpg";
+					?>
+					<div class="card col-4 mb-3" style="width: 22rem;">
+						<div class="card-body">
+                            <img src="<?php echo $desti?>" class="card-img-top" alt="...">
+							<h4 class="card-title"><?php echo $res['date'];?></h4>
+							<!-- agafem nomes un part del text i si volem veure el text sencer fem click a veure mes -->
+							<h5 class="card-text"><?php echo $res['desti'];?></h5>
+                            <p class="card-text"><?php echo $res['nom'];?></p>
+                            <p class="card-text"><?php echo $res['telefon'];?></p>
+                            <p class="card-text"><?php echo $res['persones'];?> Persones</p>
+                            <p class="card-text"><?php echo $res['preu'];?>€</p>
+                            <!-- boto per elimar un article de la base de dades. -->
+							<button type="button" id="btn11" class="btn btn-light"><a href="../logica/index.php?delete=<?php echo $res['id']; ?>"><img src="../imatges/trash.png" width="30px"/></a></button>
+							<hr>
+						</div>
+					</div>
+					
+					<?php
+				endwhile;
+				?>
 
-        </div>
+			</div>
+
+
+      
     </div>
 
 

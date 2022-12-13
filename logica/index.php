@@ -63,6 +63,18 @@
     }
 
 
+    $connexio = conexiobd();
+    //fem la consulta per comprovar que hi ha reserves
+    $statementcards = $connexio->prepare("SELECT * FROM reserves");
+    $statementcards->execute();
+
+    if (isset($_GET['delete'])) {
+        $id = $_GET['delete'];
+        eliminarReserva($id);
+    }
+
+
+
     function conexiobd(){
         //fem la conexio a la base de dades de wonderful_travel
         try {
@@ -82,6 +94,13 @@
         $statement = $connexio->prepare("INSERT INTO reserves (date, preu, nom, telefon, persones, desti) VALUES ('$Date', '$Preu', '$Nom', '$Tel', '$persones', '$pais')");
         $statement->execute();
         echo "Reserva afegida correctament";
+    }
+
+    function eliminarReserva($id){
+        $connexio = conexiobd();
+        //fem la consulta amb preparestatement per evitar sql injection
+        $statement = $connexio->prepare("DELETE FROM reserves WHERE id = '$id'");
+        $statement->execute();
     }
 
     require '../vista/index.vista.php';

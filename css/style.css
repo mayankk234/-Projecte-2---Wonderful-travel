@@ -12,6 +12,11 @@ margin-right: 25px;
 
 }
 
+#reservas{
+    max-height: 600px;
+    overflow-y: auto;
+}
+
 .form-container {
     border: 3px;
     border-color: black;

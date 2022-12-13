@@ -2,23 +2,35 @@ import {relojAnalogico} from "./rellotge.js";
 
 relojAnalogico(document.getElementById('relojAnalogico'));
 document.getElementById("continent").addEventListener("change", paisDesti);
+let continents = {"Asia": ["India", "China", "Bangladesh", "Tailandia"], "Africa": ["Zimbabwe","Uganda","Senegal","Ghana"], "Europa": ["Alemania","Francia","Belgica","Italia"], "America": ["Argentina", "Mexico", "Peru", "Colombia"]};
 
 
-let continents = {"Asia": ["India", "Bangkok", "Bangladesh", "Tailandia"], "Africa": ["Zimbabwe","Uganda","Senegal","Ghana"], "Europa": ["Alemania","Francia","Belgica","Italia"], "America": ["Argentina", "Mexico", "Peru", "Colombia"]};
 
 
+paisDesti();
 function paisDesti(){
-  var paisos = [];
   var con = document.getElementById("continent").value;
-  try {
+  var paisos = [];
+  
+  try{
     paisos.push(continents[con]);
-  } catch (error) {
-    throw Error("El continent que s'intenta escollir no existeix");
+  }catch{
+    alert("continent erroni");
+    return;
   }
-  var selPais = document.getElementById("pais").options;
 
-  selPais = [];
+  let selectP = document.getElementById("pais");
 
-  selPais.push(paisos);
+  while(selectP.firstChild){
+    selectP.removeChild(selectP.firstChild);
+  }
+
+  for(var x = 0; x < paisos[0].length; x++){
+    var opt = document.createElement("option");
+    opt.value = paisos[0][x];
+    opt.appendChild(document.createTextNode(paisos[0][x]));
+    selectP.appendChild(opt);
+  }
+
 
 }
