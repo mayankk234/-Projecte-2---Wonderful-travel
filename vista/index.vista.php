@@ -79,7 +79,7 @@
                 <div class="col-3">
                     <div class="form-group"> 
                         <label class="control-label" for="preu">Preu: </label>
-                        <input class="form-control" id="preu" name="preu" type="number" placeholder="preu €"/>
+                        <input class="form-control" id="preu" name="preu" type="text"  />
                     </div>
                 </div>
             </div>
@@ -126,7 +126,7 @@
             <button type="submit" name="submit" class="btn btn-primary">Submit</button>
         </form>        
         <?php if (!empty($error)) { ?>
-                    <div class="alert alert-danger role="alert"><?php echo $error; ?></div>
+                    <div class="alert alert-danger role=alert"><?php echo $error; ?></div>
         <?php } ?>
         <div id="reservas" class="row justify-content-around">
         
