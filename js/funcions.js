@@ -1,16 +1,24 @@
 import { relojAnalogico } from "./rellotge.js";
 import * as lib from "./llibreria/elements.js";
 
-relojAnalogico(document.getElementById('relojAnalogico'));
 document.getElementById("continent").addEventListener("change", paisDesti);
 document.getElementById("pais").addEventListener("change", preu);
 document.getElementById("descompte").addEventListener("change", preu);
 window.onload = paisDesti;
 
 
+
+let ampm = true;
 let preus = agafarPreus();
 let continents = agafarPaisos();
 let reserves = agafarReserves();
+
+rellotgeAMPM(ampm);
+
+document.getElementById("relojAnalogico").addEventListener("dblclick",rellotgeAMPM);
+
+
+
 
 dataActual();
 mostrarReservas();
@@ -102,18 +110,20 @@ function mostrarReservas() {
 
   for (let reserva of reserves) {
     var imatge = "../imatges/" + reserva.desti + ".jpg";
-    console.log(reserva);
     var card = lib.crearElement({tipus:"div",atributs:{"class":["card" , "col-4","mb,3"],"style" : "width: 22rem"}});
     card.appendChild(lib.crearElement({tipus:"img",atributs:{"src": imatge, "class" : ["mt-2"]}}))
     var cardBody = lib.crearElement({tipus:"div",atributs:{"class":["card-body"]}});
     card.appendChild(cardBody);
-    cardBody.appendChild(lib.crearElement({tipus:"h5",atributs :{"class":["card-title"]},contingut: lib.crearText(reserva.desti)}));
-    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText(reserva.nom)}));
-    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText(reserva.telefon)}));
-    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText(reserva.persones)}));
-    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText(reserva.date)}));
-    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText(reserva.preu + "€")}));
-    cardBody.appendChild(lib.crearElement({tipus:"a", atributs:{"href" : "../logica/index.php?delete=" + reserva.id},contingut: lib.crearElement({tipus:"img",atributs:{"src":"../imatges/trash-fill.svg"}})}));
+    var divRow = lib.crearElement({tipus:"div",atributs:{"class": ["row"]},contingut:lib.crearElement({tipus:"div",atributs:{"class":["col-6"]}})});
+    divRow.appendChild(lib.crearElement({tipus:"div",atributs:{"class":["col-6","text-end"]}}));
+    divRow.childNodes[0].appendChild(lib.crearElement({tipus:"h5",atributs :{"class":["card-title"]},contingut: lib.crearText("Destí: " + reserva.desti)}));
+    divRow.childNodes[1].appendChild(lib.crearElement({tipus:"a", atributs:{"href" : "../logica/index.php?delete=" + reserva.id},contingut: lib.crearElement({tipus:"img",atributs:{"src":"../imatges/trash-fill.svg"}})}));
+    cardBody.appendChild(divRow);
+    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText("Nom: " + reserva.nom)}));
+    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText("Telefon: " + reserva.telefon)}));
+    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText("Persones: " + reserva.persones)}));
+    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText("Data: " + reserva.date)}));
+    cardBody.appendChild(lib.crearElement({tipus:"p",atributs :{"class":["card-text"]},contingut: lib.crearText("Preu total: " + reserva.preu + "€")}));
     divReserves.appendChild(card);
   }
 }
@@ -163,4 +173,14 @@ function agafarReserves() {
     alert("Per un problema, no es podran mostrar les reserves");
   }
   return reserves
+}
+
+function rellotgeAMPM(){
+  if(ampm){
+    relojAnalogico(document.getElementById('relojAnalogico'),true);
+    ampm = false;
+  }else{
+    relojAnalogico(document.getElementById('relojAnalogico'),false);
+    ampm = true;
+  }
 }

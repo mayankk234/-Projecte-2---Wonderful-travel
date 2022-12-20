@@ -153,9 +153,18 @@
 
 
         </form>
+        <div class="row align-items-end">
+            <div class="col">
+                    <div class="btn-group border border-dark" role="group">
+                        <a id="ordenarData" href="../logica/index.php?ordenar=data" class="btn border  border-dark btn-outline-dark <?php if (isset($_SESSION['data'])) echo 'active bg-dark'; ?>">Ordenar per data </a>
+
+                        <a id="ordenarDesti" href="../logica/index.php?ordenar=desti" class="btn btn-background btn-outline-dark <?php if (isset($_SESSION['desti'])) echo 'active bg-dark'; ?>" >Ordenar per destí  </a>
+            </div>
+        </div>
+
         <div id="reserves" class="row justify-content-around">
 
-            
+
 
         </div>
 

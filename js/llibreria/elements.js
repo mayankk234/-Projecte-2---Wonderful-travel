@@ -15,7 +15,6 @@ export function crearElement({ tipus, atributs, contingut }) {
         }
     }
     if (contingut) {
-        console.log(contingut);
         element.appendChild(contingut);
     }
     return element;
