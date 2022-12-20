@@ -59,8 +59,16 @@ if (isset($_POST['submit'])) {
     $nom = $_POST['nom'];
     $tel = $_POST['tel'];
     $persones = $_POST['persones'];
-    $continent = $_POST['continent'];
-    $pais = $_POST['pais'];
+
+
+    if(isset($_POST['continent']) && isset($_POST['pais'])){
+        $continent = $_POST['continent'];
+        $pais = $_POST['pais'];
+        if (!comprobarPais($continent, $pais)) {
+            $errorPais = "El pais o continent no estàn disponibles per viatjar";
+        }
+    }else $errorPais = "Has d'escollir un pais i continent";
+
     
     if (isset($_POST['descompte'])) {
         $descompte = 1;
@@ -88,9 +96,6 @@ if (isset($_POST['submit'])) {
         }
     } else $errorPersones = "Has d'introduir un nombre de persones";
 
-    if (!comprobarPais($continent, $pais)) {
-        $errorPais = "El pais o continent no estàn disponibles per viatjar";
-    }
 
     //si tots els camps estan omplerts i correctes fem la consulta cridan la funcio afagirReserva despres de calcular el preu
     if (empty($errorData) && empty($errorNom) && empty($errorTel) && empty($errorPersones) && empty($errorPais)) {
