@@ -8,6 +8,7 @@ session_start();
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
     if(comprobarReserva($id)){
+        actualitzarHistoric($id);
         eliminarReserva($id);
         $success = "S'ha esborrat la reserva correctament";
     }
@@ -135,10 +136,17 @@ function afagirReserva($date, $Preu, $nom, $tel, $persones, $pais)
 {
     $connexio = conexiobd();
     //fem la consulta amb preparestatement per evitar sql injection
-    $statement = $connexio->prepare("INSERT INTO reserves (date, preu, nom, telefon, persones, desti) VALUES ('$date', '$Preu', '$nom', '$tel', '$persones', '$pais')");
-    $statement->execute();
+    $afegir = $connexio->prepare("INSERT INTO reserves (date, preu, nom, telefon, persones, desti) VALUES ('$date', '$Preu', '$nom', '$tel', '$persones', '$pais')");
+    $historic = $connexio->prepare("INSERT INTO historic (date, preu, nom, telefon, persones, desti, cancelat) VALUES ('$date', '$Preu', '$nom', '$tel', '$persones', '$pais', false)");
+    $afegir->execute();
     global $success;
     $success = "Reserva afegida correctament";
+}
+
+function actualitzarHistoric($id){
+   $connexio = conexiobd();
+   $update = $connexio->prepare("UPDATE historic SET cancelat = true WHERE id=?");
+   $update->execute(array($id));
 }
 
 function eliminarReserva($id)
