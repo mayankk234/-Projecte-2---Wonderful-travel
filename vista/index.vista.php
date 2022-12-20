@@ -8,11 +8,9 @@
     <title>Wonderful-Travel</title>
     <!-- stylesheet -->
     <!-- scripts -->
-    <script type="module" src="../js/Funcions.js" ></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap" rel="stylesheet">  
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="https://getbootstrap.com/docs/5.2/assets/css/docs.css" rel="stylesheet"/>
+    <script type="module" src="../js/Funcions.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans+Condensed:wght@300&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../css/style.css">
 
@@ -47,120 +45,122 @@
                 <h1>Travel</h1>
             </div>
         </div>
-        
+
         <hr>
 
         <form class="form-container" action="../logica/index.php" method="post">
-            <div class="form-group"> 
-                <label class="control-label" for="date">Date</label>
-                <input class="form-control" id="date" name="date" placeholder="MM/DD/YYY" type="date"/>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group mb-3">
+                        <label class="control-label " for="date">Date</label>
+                        <input class="form-control" id="date" name="date" type="date">
+                    </div>
+                    <?php if (!empty($errorData)) { ?>
+                        <div class="alert alert-danger mt-2" role="alert"><?php echo $errorData; ?></div>
+                    <?php } ?>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="control-label" for="persones">Persones </label>
+                        <input class="form-control" id="persones" name="persones" type="number" placeholder="nº persones" value=<?php if (!empty($_POST) && empty($success)) echo $_POST['persones']; ?>>
+                    </div>
+                    <?php if (!empty($errorPersones)) { ?>
+                        <div class="alert alert-danger mt-2" role="alert"><?php echo $errorPersones; ?></div>
+                    <?php } ?>
+                </div>
             </div>
 
-            <div class="row">
 
-                <div class="col">
+
+
+
+            <div class="row mb-3">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="control-label" for="nom">Nom: </label>
+                        <input class="form-control" id="nom" name="nom" type="text" placeholder="Nom" value=<?php if (!empty($_POST)  && empty($success)) echo $nom ?>>
+                    </div>
+                    <?php if (!empty($errorNom)) { ?>
+                        <div class="alert alert-danger mt-2" role="alert"><?php echo $errorNom; ?></div>
+                    <?php } ?>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="control-label" for="tel">Telefon: </label>
+                        <input class="form-control" id="tel" name="tel" type="tel" placeholder="000 000 000" value=<?php if (!empty($_POST)  && empty($success)) echo $tel ?>>
+                    </div>
+                    <?php if (!empty($errorTel)) { ?>
+                        <div class="alert alert-danger mt-2" role="alert"><?php echo $errorTel; ?></div>
+                    <?php } ?>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+
+
+                <div class="col-6">
                     <label class="control-label" for="continent">Desti</label>
                     <select class="form-select" aria-label="Default select example" id="continent" name="continent">
-                        <option value="Asia" selected>Asia</option>
+                        <option disabled selected value hidden></option>
+                        <option value="Asia">Asia</option>
                         <option value="Africa">Africa</option>
                         <option value="Europa">Europa</option>
                         <option value="America">America</option>
                     </select>
+                    <?php if (!empty($errorPais)) { ?>
+                        <div class="alert alert-danger mt-2" role="alert"><?php echo $errorPais; ?></div>
+                    <?php } ?>
                 </div>
 
-                <div class="col">
-                <label class="control-label" for="pais">Pais</label>
+                <div class="col-6">
+                    <label class="control-label" for="pais">Pais</label>
                     <select class="form-select" aria-label="Default select example" id="pais" name="pais"></select>
                     </select>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col-3">
-                    <div class="form-group"> 
+
+            <div class="row mb-3">
+                <div class="col-3 d-flex flex-column">
+                    <div class="form-group col">
                         <label class="control-label" for="preu">Preu: </label>
-                        <input class="form-control" id="preu" name="preu" type="text"  />
+                        <input class="form-control" id="preu" name="preu" type="text" disabled>
+                    </div>
+                    <div class="form-check col">
+                        <label class="form-check-label" for="decompte">Descompte 20%</label>
+                        <input class="form-check-input" type="checkbox" value="" id="descompte" name="descompte">
+                    </div>
+                    <div class="col mt-auto ">
+                        <button type="submit" name="submit" class="btn btn-primary align-bottom  w-50">Comprar tiquets</button>
+                    </div>
+
+                </div>
+
+                <div class="col mt-2 ">
+                    <div id="imatge" class="text-center w-auto h-auto">
                     </div>
                 </div>
             </div>
 
-            <div class="row">
-                <div class="col">
-                    <div class="form-group"> 
-                        <label class="control-label" for="nom">Nom: </label>
-                        <input class="form-control" id="nom" name="nom" type="text" placeholder="name"/>
-                    </div>
-                </div>
-            </div>
-                                                <!-- error: -->
-            <?php if (!empty($errorNom)) { ?>
-                <div class="alert alert-danger" role="alert"><?php echo $errorNom; ?></div>
+
+            <?php if (!empty($error)) { ?>
+                <div class="alert alert-danger role=alert"><?php echo $error; ?></div>
+            <?php } ?>
+            <?php if (!empty($success)) { ?>
+                <div class="alert alert-success role=alert"><?php echo $success; ?></div>
             <?php } ?>
 
-            <div class="row">
-                <div class="col-3">
-                    <div class="form-group"> 
-                        <label class="control-label" for="tel">Telefon: </label>
-                        <input class="form-control" id="tel" name="tel" type="tel" placeholder="000 000 000"/>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-3">
-                    <div class="form-group"> 
-                        <label class="control-label" for="persones">Persones </label>
-                        <input class="form-control" id="persones" name="persones" type="number" placeholder="nº persones"/>
-                    </div>
-                </div>
-            </div>
-            <br>
+        </form>
+        <div id="reserves" class="row justify-content-around">
 
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="descompte" name="descompte">
-                <label class="form-check-label" for="decompte">
-                    Descompte 20%
-                </label>
-            </div>
-            <br>
-            <button type="submit" name="submit" class="btn btn-primary">Submit</button>
-        </form>        
-        <?php if (!empty($error)) { ?>
-                    <div class="alert alert-danger role=alert"><?php echo $error; ?></div>
-        <?php } ?>
-        <div id="reservas" class="row justify-content-around">
-        
-			 <!--aqui guardem els articles-->
-				<?php 
-				while($res = $statementcards->fetch(PDO::FETCH_ASSOC)):
-                    $desti = "../imatges/";
-                    $desti .= $res['desti'];
-                    $desti .= ".jpg";
-					?>
-					<div class="card col-4 mb-3" style="width: 22rem;">
-						<div class="card-body">
-                            <img src="<?php echo $desti?>" class="card-img-top" alt="...">
-							<h4 class="card-title"><?php echo $res['date'];?></h4>
-							<!-- agafem nomes un part del text i si volem veure el text sencer fem click a veure mes -->
-							<h5 class="card-text"><?php echo $res['desti'];?></h5>
-                            <p class="card-text"><?php echo $res['nom'];?></p>
-                            <p class="card-text"><?php echo $res['telefon'];?></p>
-                            <p class="card-text"><?php echo $res['persones'];?> Persones</p>
-                            <p class="card-text"><?php echo $res['preu'];?>€</p>
-                            <!-- boto per elimar un article de la base de dades. -->
-							<button type="button" id="btn11" class="btn btn-light"><a href="../logica/index.php?delete=<?php echo $res['id']; ?>"><img src="../imatges/trash.png" width="30px"/></a></button>
-							<hr>
-						</div>
-					</div>
-					
-					<?php
-				endwhile;
-				?>
+            
 
-			</div>
+        </div>
 
 
-      
+
     </div>
 
 

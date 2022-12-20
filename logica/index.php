@@ -2,6 +2,16 @@
 
 $pattern = '/^((((19|[2-9]\d)\d{2})\-(0[13578]|1[02])\-(0[1-9]|[12]\d|3[01]))|(((19|[2-9]\d)\d{2})\-(0[13456789]|1[012])\-(0[1-9]|[12]\d|30))|(((19|[2-9]\d)\d{2})\-02\-(0[1-9]|1\d|2[0-8]))|(((1[6-9]|[2-9]\d)(0[48]|[2468][048]|[13579][26])|((16|[2468][048]|[3579][26])00))\-02\-29))$/';
 
+
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    if(comprobarReserva($id)){
+        eliminarReserva($id);
+        $success = "S'ha esborrat la reserva correctament";
+    }
+}
+
+
 $preus = agafarPreus();
 setcookie("preus", json_encode($preus));
 $paisos = agafarPaisos();
@@ -9,80 +19,58 @@ setcookie("paisos", json_encode($paisos));
 
 //SI EL USUARI HA PULSAT EL BOTÓ DE AFAEGIR AGAFEM LES DADES:
 if (isset($_POST['submit'])) {
-    $errorPreu = "";
-    $errorNom = "";
-    $errorTel = "";
-    $errorPersones = "";
-    $error = "";
+    $errorNom = $errorTel = $errorPersones = $error = $success = "";
 
 
     $date = $_POST['date'];
-    $Preu = $_POST['preu'];
-    $Nom = $_POST['nom'];
-    $Tel = $_POST['tel'];
+    $nom = $_POST['nom'];
+    $tel = $_POST['tel'];
     $persones = $_POST['persones'];
-    //agafem el checkbox de descompte
+    $continent = $_POST['continent'];
+    $pais = $_POST['pais'];
+    
     if (isset($_POST['descompte'])) {
         $descompte = 1;
     } else {
         $descompte = 0;
     }
 
-    if (isset($_POST['continent'])) {
-        $continent = $_POST['continent'];
-    } else {
-        $continent = null;
-    }
-    if (isset($_POST['pais'])) {
-        $pais = $_POST['pais'];
-    } else {
-        $pais = null;
-    }
+    if (!empty($date)) {
+        if (!preg_match($pattern, $date)) $errorData = "Format de data incorrecte";
+    } else $errorData = "No pots deixar el camp data buit";
 
-    //comprovem que no hi hagi camps buits
-    if (empty($date) || empty($Preu) || empty($Nom) || empty($Tel) || empty($persones) || empty($continent) || empty($pais)) {
-        $error =  "No pots deixar camps buits";
-    } else {
-        //si tots els camps estan omplerts comprovem que el preu sigui un numero, el nom nomes lletres i el tel nomes numeros i 9 digits 
-        if (!is_numeric($Preu)) {
-            $errorPreu =  "El preu ha de ser un numero";
-        }
-        if (!preg_match("/^[a-zA-Z ]*$/", $Nom)) {
-            $errorNom =  "El nom nomes pot contenir lletres";
-        }
-        if (!preg_match("/^[0-9]{9}$/", $Tel)) {
+    if (!empty($nom)) {
+        $nom = tractardades($nom);
+    } else $errorNom = "Has d'introduir un nom";
+
+    if (!empty($tel)) {
+        if (!preg_match("/^[0-9]{9}$/", $tel)) {
             $errorTel =  "El telefon nomes pot contenir numeros i 9 digits";
         }
-        if (!is_numeric($persones)) {
-            $errorPersones =  "Les persones han de ser un numero";
-        }
-        if (!comprobarPais($continent, $pais)) {
-            $errorPais = "El pais o continent no estàn disponibles per viatjar";
-        }
+    } else $errorTel = "Has d'introduir un teléfon";
 
-
-        if (!preg_match($pattern, $date)) {
-            $errorData = "Format de data incorrecte";
+    if (!empty($persones)) {
+        if (!is_numeric($persones) || $persones < 0) {
+            $errorPersones =  "Les persones han de ser un numero positiu";
         }
+    } else $errorPersones = "Has d'introduir un nombre de persones";
 
+    if (!comprobarPais($continent, $pais)) {
+        $errorPais = "El pais o continent no estàn disponibles per viatjar";
+    }
 
-        //si tots els camps estan omplerts i correctes fem la consulta cridan la funcio afagirReserva
-        if (is_numeric($Preu) && preg_match("/^[a-zA-Z ]*$/", $Nom) && preg_match("/^[0-9]{9}$/", $Tel) && is_numeric($persones)) {
-            afagirReserva($date, $Preu, $Nom, $Tel, $persones, $pais);
-        }
+    //si tots els camps estan omplerts i correctes fem la consulta cridan la funcio afagirReserva despres de calcular el preu
+    if (empty($errorData) && empty($errorNom) && empty($errorTel) && empty($errorPersones) && empty($errorPais)) {
+        if ($descompte) $Preu = $preus[$pais] * 0.8 * $persones;
+        else $Preu = $preus[$pais] * $persones;
+        afagirReserva($date, $Preu, $nom, $tel, $persones, $pais);
     }
 }
 
 
-$connexio = conexiobd();
-//fem la consulta per comprovar que hi ha reserves
-$statementcards = $connexio->prepare("SELECT * FROM reserves");
-$statementcards->execute();
+$reserves = agafarReserves();
+setcookie("reserves",json_encode($reserves));
 
-if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    eliminarReserva($id);
-}
 
 
 
@@ -92,8 +80,8 @@ function conexiobd()
     try {
         $connexio = new PDO('mysql:host=localhost;dbname=wonderful_travel', 'root', '');
     } catch (PDOException $e) {
-        echo "Error: " . $e->getMessage();
-        echo "Error al conectarse a la base de dades!";
+        global $error;
+        $error = "Error al conectarse a la base de dades!";
     }
     return $connexio;
 }
@@ -106,13 +94,14 @@ function tractardades($dades)
     return $dades;
 }
 
-function afagirReserva($date, $Preu, $Nom, $Tel, $persones, $pais)
+function afagirReserva($date, $Preu, $nom, $tel, $persones, $pais)
 {
     $connexio = conexiobd();
     //fem la consulta amb preparestatement per evitar sql injection
-    $statement = $connexio->prepare("INSERT INTO reserves (date, preu, nom, telefon, persones, desti) VALUES ('$date', '$Preu', '$Nom', '$Tel', '$persones', '$pais')");
+    $statement = $connexio->prepare("INSERT INTO reserves (date, preu, nom, telefon, persones, desti) VALUES ('$date', '$Preu', '$nom', '$tel', '$persones', '$pais')");
     $statement->execute();
-    echo "Reserva afegida correctament";
+    global $success;
+    $success = "Reserva afegida correctament";
 }
 
 function eliminarReserva($id)
@@ -138,6 +127,22 @@ function comprobarPais($continent, $pais)
     }
 }
 
+function comprobarReserva($id)
+{
+    $connexio = conexiobd();
+    $statement = $connexio->prepare("SELECT * FROM reserves WHERE id = ?");
+    $statement->execute(array($id));
+
+    $res = $statement->fetch(PDO::FETCH_ASSOC);
+
+    if ($res) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 function agafarPreus()
 {
     $connexio = conexiobd();
@@ -151,7 +156,8 @@ function agafarPreus()
             $preus[$row['pais']] = $row['preu'];
         }
     } else {
-        echo "No s'han trobat els preus a la base de dades";
+        global $error;
+        $error = "No s'han trobat els preus a la base de dades";
     }
     return $preus;
 }
@@ -170,9 +176,31 @@ function agafarPaisos()
             $paisos[$row['continent']][] = $row['pais'];
         }
     } else {
-        echo "No s'han trobat els paisos a la base de dades";
+        global $error;
+        $error = "No s'han trobat els paisos a la base de dades";
     }
     return $paisos;
 }
 
+function agafarReserves()
+{
+    $connexio = conexiobd();
+    //fem la consulta per comprovar que hi ha reserves
+    $statementcards = $connexio->prepare("SELECT * FROM reserves");
+    $statementcards->execute();
+    $reserves = [];
+
+    if ($statementcards->rowCount() > 0) {
+        $statementcards->setFetchMode(PDO::FETCH_ASSOC);
+        $iterator = new IteratorIterator($statementcards);
+        
+        foreach ($iterator as $row) {
+        $reserves[] = array("id" => $row['id'],"desti" => $row['desti'], "date" => $row['date'], 'nom' => $row['nom'], "telefon" => $row['telefon'], 'persones' => $row['persones'], 'preu' => $row['preu']); 
+        }
+    } 
+    return $reserves;
+}
+
+
 require '../vista/index.vista.php';
+?>
