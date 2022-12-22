@@ -20,6 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `wonderful_travel`
 --
+DROP DATABASE IF EXISTS `wonderful_travel`;
+CREATE DATABASE IF NOT EXISTS `wonderful_travel`;
+USE `wonderful_travel`;
 
 -- --------------------------------------------------------
 
